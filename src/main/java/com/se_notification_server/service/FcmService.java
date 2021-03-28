@@ -1,5 +1,6 @@
 package com.se_notification_server.service;
 
+import com.google.firebase.messaging.*;
 import com.se_notification_server.domain.AccountTagMapping;
 import com.se_notification_server.repository.FcmRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +23,6 @@ public class FcmService {
         return fcmRepository.findById(userId);
     }
 
-    public String getToken(Long userId) {
-        return findOne(userId).get().getToken();
-
-    }
-
     public Long save(AccountTagMapping accountTagMapping) {
         doubleCheck(accountTagMapping);
         fcmRepository.save(accountTagMapping);
@@ -46,5 +42,20 @@ public class FcmService {
             tokenList.add(token);
         }
         return tokenList;
+    }
+
+    public BatchResponse send(List<String> sendTokens, String title, String msg) throws FirebaseMessagingException {
+
+        MulticastMessage message = MulticastMessage.builder()
+                .putData("title", title)
+                .putData("content", msg)
+                .addAllTokens(sendTokens)
+                .build();
+
+        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+
+        System.out.println(response.getSuccessCount() + " messages were sent successfully");
+
+        return response;
     }
 }
