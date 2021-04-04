@@ -2,11 +2,10 @@ package com.se_notification_server.controller;
 
 
 import com.google.firebase.messaging.*;
-import com.se_notification_server.domain.AccountTagMapping;
+import com.se_notification_server.domain.AccountTokenMapping;
 import com.se_notification_server.service.FcmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -23,10 +22,10 @@ public class FcmController {
     @PostMapping("notice/save-token")
     @ResponseBody
     public void sendToToken(@RequestParam("userId") Long userId, @RequestParam("token") String token) {
-        AccountTagMapping accountTagMapping = new AccountTagMapping();
-        accountTagMapping.setAccountId(userId);
-        accountTagMapping.setToken(token);
-        fcmService.save(accountTagMapping);
+        AccountTokenMapping accountTokenMapping = new AccountTokenMapping();
+        accountTokenMapping.setAccountId(userId);
+        accountTokenMapping.setToken(token);
+        fcmService.save(accountTokenMapping);
     }
 
     @PostMapping("notice/multi-message")

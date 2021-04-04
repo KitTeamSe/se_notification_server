@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
-public class AccountTagMapping {
+public class AccountTokenMapping {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +21,8 @@ public class AccountTagMapping {
     return accountId;
   }
 
-  public void setAccountId(Long accountId) {
-    this.accountId = accountId;
-  }
-
   public String getToken() {
     return token;
   }
 
-  public void setToken(String token) {
-    this.token = token;
-  }
 }

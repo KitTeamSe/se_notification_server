@@ -1,7 +1,7 @@
 package com.se_notification_server.service;
 
 import com.google.firebase.messaging.*;
-import com.se_notification_server.domain.AccountTagMapping;
+import com.se_notification_server.domain.AccountTokenMapping;
 import com.se_notification_server.repository.FcmRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +19,18 @@ public class FcmService {
     }
 
 
-    public Optional<AccountTagMapping> findOne(Long userId) {
+    public Optional<AccountTokenMapping> findOne(Long userId) {
         return fcmRepository.findById(userId);
     }
 
-    public Long save(AccountTagMapping accountTagMapping) {
-        doubleCheck(accountTagMapping);
-        fcmRepository.save(accountTagMapping);
-        return accountTagMapping.getAccountId();
+    public Long save(AccountTokenMapping accountTokenMapping) {
+        doubleCheck(accountTokenMapping);
+        fcmRepository.save(accountTokenMapping);
+        return accountTokenMapping.getAccountId();
     }
 
-    public void doubleCheck(AccountTagMapping accountTagMapping) {
-        if(fcmRepository.existsAccountTagMappingByToken(accountTagMapping.getToken())) {
+    public void doubleCheck(AccountTokenMapping accountTokenMapping) {
+        if(fcmRepository.existsAccountTagMappingByToken(accountTokenMapping.getToken())) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
