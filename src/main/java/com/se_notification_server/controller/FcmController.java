@@ -1,7 +1,6 @@
 package com.se_notification_server.controller;
 
-
-import com.google.firebase.messaging.*;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.se_notification_server.domain.AccountTokenMapping;
 import com.se_notification_server.service.FcmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +21,13 @@ public class FcmController {
     @PostMapping("notice/save-token")
     @ResponseBody
     public void sendToToken(@RequestParam("userId") Long userId, @RequestParam("token") String token) {
-        AccountTokenMapping accountTokenMapping = new AccountTokenMapping();
-        accountTokenMapping.setAccountId(userId);
-        accountTokenMapping.setToken(token);
-        fcmService.save(accountTokenMapping);
+        fcmService.save(AccountTokenMapping.builder()
+                .accountId(userId)
+                .token(token)
+                .build());
     }
 
-    @PostMapping("notice/multi-message")
+    @PostMapping("notice/send")
     @ResponseBody
     public void sendToMultiToken(@RequestParam("accountIdList") List<Long> accountIdList, @RequestParam("title") String title, @RequestParam("msg") String msg) throws FirebaseMessagingException {
 
